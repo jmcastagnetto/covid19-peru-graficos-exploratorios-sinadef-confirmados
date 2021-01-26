@@ -15,7 +15,20 @@ per_week <- sinadef_acumulados %>%
     menores = sum(menores),
     fallecidos = sum(n),
     en_casa = sum(en_casa)
+  ) %>%
+  filter(
+    n_dias == 7
+  ) %>%
+  mutate(
+    epi_yr_wk = glue::glue("{epi_year}-{epi_week}")
   )
+
+date_range <- range(
+  sinadef_acumulados %>%
+    mutate(epi_yr_wk = glue::glue("{epi_year}-{epi_week}")) %>%
+    filter(epi_yr_wk %in% unique(per_week$epi_yr_wk)) %>%
+    pull(fecha)
+)
 
 updated <- Sys.Date()
 Sys.setlocale("LC_TIME", "es_PE.utf8")
@@ -93,15 +106,15 @@ p1 <- ggplot(
     y = "Número de fallecidos por semana",
     x = "",
     title = "Fallecimientos de menores de 18 años por causas no violentas",
-    caption = glue::glue("En azul: modelo GAM [y ~ s(x, bs = 'cs')]\nFuente: SINADEF (Datos abiertos, {updated}) // @jmcastagnetto, Jesus M. Castagnetto")
+    caption = glue::glue("Fuente: SINADEF (Datos abiertos), del {date_range[1]} al {date_range[2]}\nEn azul: modelo GAM [y ~ s(x, bs = 'cs')] // {updated}, @jmcastagnetto, Jesus M. Castagnetto")
   ) +
   theme_classic(32) +
   theme(
-    plot.caption = element_text(family = "Inconsolata", size = 24),
+    plot.caption = element_text(family = "Inconsolata", size = 20),
     axis.text.x = element_text(size = 20),
     plot.margin = unit(rep(1, 4), "cm")
   )
-
+#p1
 # de 2017 - 2021
 ggsave(
   p1,
@@ -117,6 +130,9 @@ ggsave(
       limits = c(as.Date("2020-01-01"), NA),
       date_labels = "%b\n%Y",
       date_breaks = "1 month"
+    ) +
+    labs(
+      caption = glue::glue("Fuente: SINADEF (Datos abiertos), del {2020-01-01} al {date_range[2]}\nEn azul: modelo GAM [y ~ s(x, bs = 'cs')] // {updated}, @jmcastagnetto, Jesus M. Castagnetto")
     ),
   file = "plots/sinadef-menores-causas-noviolentas-por-semana-2020-2021-lineas-gam.png",
   width = 18,

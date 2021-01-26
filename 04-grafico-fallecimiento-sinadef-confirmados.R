@@ -21,7 +21,20 @@ sinadef_per_week <- sinadef_selected %>%
     epi_year = unique(epi_year),
     epi_week = unique(epi_week),
     fallecidos = sum(n, na.rm = TRUE)
-  )
+  ) %>%
+  ungroup() %>%
+  mutate(
+    epi_yr_wk = glue::glue("{epi_year}-{epi_week}")
+  ) %>%
+  filter(n_dias == 7) # semanas completas
+
+date_range <- range(
+  sinadef_selected %>%
+    mutate(epi_yr_wk = glue::glue("{epi_year}-{epi_week}")) %>%
+    filter(epi_yr_wk %in% unique(sinadef_per_week$epi_yr_wk)) %>%
+    pull(fecha)
+)
+
 
 confirmados_per_week <- fallecimientos %>%
   filter(fecha_fallecimiento >= "2020-05-01") %>%
@@ -69,14 +82,15 @@ p1 <- ggplot(
   labs(
     y = "Tasa por semana",
     x = "",
-    title = "Tasa de fallecidos (no violentos) en SINADEF vs confirmados COVID-19",
-    caption = glue::glue("Fuentes: SINADEF y Fallecidos por COVID-19 (Datos Abiertos, {updated}) // @jmcastagnetto, Jesus M. Castagnetto")
+    title = "Tasa de fallecidos (causas no violentas) en SINADEF vs confirmados COVID-19",
+    caption = glue::glue("Fuentes: SINADEF y Fallecidos por COVID-19 (Datos Abiertos), del {date_range[1]} al {date_range[2]}\n{updated}, @jmcastagnetto, Jesus M. Castagnetto")
   ) +
   theme_classic(28) +
   theme(
-    plot.caption = element_text(family = "Inconsolata", size = 21)
+    plot.title.position = "plot",
+    plot.caption = element_text(family = "Inconsolata", size = 20)
   )
-
+#p1
 ggsave(
   p1,
   file = "plots/sinadef-noviolentas-vs-fallecidos-covid19-por-semana.png",

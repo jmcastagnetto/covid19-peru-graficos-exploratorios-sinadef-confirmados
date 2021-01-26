@@ -14,6 +14,10 @@ per_week <- sinadef_nov1_hoy %>%
     epi_year = unique(epi_year),
     epi_week = unique(epi_week),
     en_casa = sum(en_casa)
+  ) %>%
+  ungroup() %>%
+  mutate(
+    label = if_else(n_dias == 7, "", "Semana\nincompleta")
   )
 
 updated <- Sys.Date()
@@ -29,6 +33,10 @@ p1 <- ggplot(
     linetype = "dashed",
     size = 1
   ) +
+  geom_text(aes(label = label), angle = 90,
+            hjust = 0, size = 6,
+            nudge_y = 100, color = "black",
+            show.legend = FALSE) +
   coord_cartesian(ylim = c(0, NA)) +
   scale_x_date(date_labels = "S: %V\n%Y",
                date_breaks = "1 week") +
@@ -39,13 +47,13 @@ p1 <- ggplot(
     x = "",
     title = "Fallecimientos en domicilios por causas no violentas",
     #subtitle = "Del 2020-11-01 a la fecha, acumulados por semana epidemiológica",
-    caption = glue::glue("Fuente: SINADEF (Datos Abiertos, {updated}) // @jmcastagnetto, Jesus M. Castagnetto")
+    caption = glue::glue("Fuente: SINADEF (Datos Abiertos)\n{updated}, @jmcastagnetto, Jesus M. Castagnetto")
   ) +
   theme_classic(32) +
   theme(
-    plot.caption = element_text(family = "Inconsolata", size = 24)
+    plot.caption = element_text(family = "Inconsolata", size = 20)
   )
-
+#p1
 ggsave(
   p1,
   file = "plots/sinadef-fallecidos-domicilio-causas-noviolentas-por-semana.png",
