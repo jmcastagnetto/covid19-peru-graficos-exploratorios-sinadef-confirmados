@@ -1,20 +1,11 @@
 library(tidyverse)
 
 # de: https://github.com/jmcastagnetto/sinadef-peru-fallecimientos
+# read on demand
 rds_url <- "https://github.com/jmcastagnetto/sinadef-peru-fallecimientos/blob/main/datos/sinadef-procesado.rds?raw=true"
-download.file(
-  rds_url,
-  "datos/sinadef-procesado.rds"
-)
-
-sinadef <- readRDS("datos/sinadef-procesado.rds")
-
-# de: https://github.com/jmcastagnetto/covid-19-peru-limpiar-datos-minsa
-rdata_url <- "https://github.com/jmcastagnetto/covid-19-peru-limpiar-datos-minsa/blob/main/datos/datos_abiertos_minsa_covid-19_peru.Rdata?raw=true"
-download.file(
-  rdata_url,
-  "datos/datos_abiertos_minsa_covid-19_peru.Rdata"
-)
+sinadef <- readRDS(url(rds_url))
+cat("Rango de fechas SINADEF\n")
+range(sinadef$fecha)
 
 # muertes violentas ICD 10 (fuente: Antonio Quispe, 2021-01-24)
 icd10_violent <- unique(c(
@@ -78,5 +69,6 @@ sinadef_acumulados <- sinadef %>%
     epi_year = lubridate::epiyear(sunday_of_week),
     epi_week = lubridate::epiweek(sunday_of_week)
   )
+
 
 saveRDS(sinadef_acumulados, "datos/datos_acumulados.rds")

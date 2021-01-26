@@ -1,6 +1,12 @@
 library(tidyverse)
 
-load("datos/datos_abiertos_minsa_covid-19_peru.Rdata")
+# de: https://github.com/jmcastagnetto/covid-19-peru-limpiar-datos-minsa
+# read on demand
+rdata_url <- "https://github.com/jmcastagnetto/covid-19-peru-limpiar-datos-minsa/blob/main/datos/datos_abiertos_minsa_covid-19_peru.Rdata?raw=true"
+load(url(rdata_url))
+
+cat("Rango de fallecimientos confirmados (datos abiertos)\n")
+range(fallecimientos$fecha_fallecimiento)
 
 sinadef_selected <- readRDS("datos/datos_acumulados.rds") %>%
   filter(fecha >= "2020-05-01")
