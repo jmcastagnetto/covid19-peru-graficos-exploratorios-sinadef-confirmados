@@ -43,6 +43,7 @@ combined_df <- sinadef_per_week %>%
     ratio = fallecidos / fall_oficial
   )
 
+updated <- Sys.Date()
 Sys.setlocale("LC_TIME", "es_PE.utf8")
 p1 <- ggplot(
   combined_df,
@@ -63,7 +64,7 @@ p1 <- ggplot(
     y = "Tasa por semana",
     x = "",
     title = "Tasa de fallecidos (no violentos) en SINADEF vs confirmados COVID-19",
-    caption = "Fuentes: SINADEF y Fallecidos por COVID-19 (Datos Abiertos, 2021-01-24) // @jmcastagnetto, Jesus M. Castagnetto"
+    caption = glue::glue("Fuentes: SINADEF y Fallecidos por COVID-19 (Datos Abiertos, {updated}) // @jmcastagnetto, Jesus M. Castagnetto")
   ) +
   theme_classic(28) +
   theme(

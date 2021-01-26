@@ -17,6 +17,7 @@ per_week <- sinadef_acumulados %>%
     en_casa = sum(en_casa)
   )
 
+updated <- Sys.Date()
 Sys.setlocale("LC_TIME", "es_PE.utf8")
 
 p1 <- ggplot(
@@ -92,7 +93,7 @@ p1 <- ggplot(
     y = "Número de fallecidos por semana",
     x = "",
     title = "Fallecimientos de menores de 18 años por causas no violentas",
-    caption = "En azul: modelo GAM [y ~ s(x, bs = 'cs')]\nFuente: SINADEF (Datos abiertos, 2021-01-24) // @jmcastagnetto, Jesus M. Castagnetto"
+    caption = glue::glue("En azul: modelo GAM [y ~ s(x, bs = 'cs')]\nFuente: SINADEF (Datos abiertos, {updated}) // @jmcastagnetto, Jesus M. Castagnetto")
   ) +
   theme_classic(32) +
   theme(

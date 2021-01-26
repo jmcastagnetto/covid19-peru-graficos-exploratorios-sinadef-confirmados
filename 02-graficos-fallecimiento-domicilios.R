@@ -16,6 +16,8 @@ per_week <- sinadef_nov1_hoy %>%
     en_casa = sum(en_casa)
   )
 
+updated <- Sys.Date()
+
 p1 <- ggplot(
   per_week,
   aes(x = monday_of_week, y = en_casa,
@@ -37,7 +39,7 @@ p1 <- ggplot(
     x = "",
     title = "Fallecimientos en domicilios por causas no violentas",
     #subtitle = "Del 2020-11-01 a la fecha, acumulados por semana epidemiológica",
-    caption = "Fuente: SINADEF (Datos Abiertos, 2021-01-24) // @jmcastagnetto, Jesus M. Castagnetto"
+    caption = glue::glue("Fuente: SINADEF (Datos Abiertos, {updated}) // @jmcastagnetto, Jesus M. Castagnetto")
   ) +
   theme_classic(32) +
   theme(
