@@ -105,7 +105,7 @@ p1 <- ggplot(
   labs(
     y = "Número de fallecidos por semana",
     x = "",
-    title = "Fallecimientos de menores de 18 años por causas no violentas",
+    title = "Fallecimientos de menores de 18 años (todas las causas)",
     caption = glue::glue("Fuente: SINADEF (Datos abiertos), del {date_range[1]} al {date_range[2]}\nEn azul: modelo GAM [y ~ s(x, bs = 'cs')] // {updated}, @jmcastagnetto, Jesus M. Castagnetto")
   ) +
   theme_classic(32) +
@@ -114,7 +114,7 @@ p1 <- ggplot(
     axis.text.x = element_text(size = 20),
     plot.margin = unit(rep(1, 4), "cm")
   )
-#p1
+p1
 # de 2017 - 2021
 ggsave(
   p1,

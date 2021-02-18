@@ -45,19 +45,20 @@ p1 <- ggplot(
   labs(
     y = "Número de fallecidos por semana",
     x = "",
-    title = "Fallecimientos en domicilios por causas no violentas",
+    title = "Fallecimientos en domicilios (todas las causas)",
     #subtitle = "Del 2020-11-01 a la fecha, acumulados por semana epidemiológica",
     caption = glue::glue("Fuente: SINADEF (Datos Abiertos)\n{updated}, @jmcastagnetto, Jesus M. Castagnetto")
   ) +
-  theme_classic(32) +
+  theme_classic(28) +
   theme(
-    plot.caption = element_text(family = "Inconsolata", size = 20)
+    plot.caption = element_text(family = "Inconsolata", size = 20),
+    plot.margin = unit(rep(1, 4), "cm")
   )
-#p1
+p1
 ggsave(
   p1,
-  file = "plots/sinadef-fallecidos-domicilio-causas-noviolentas-por-semana.png",
-  width = 16,
-  height = 9
+  file = "plots/sinadef-fallecidos-domicilio-todas-causas-por-semana.png",
+  width = 18,
+  height = 10
 )
 
